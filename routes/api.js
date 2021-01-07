@@ -21,6 +21,7 @@ module.exports = function (app, Book) {
       //response will contain new book object including atleast _id and title
       const book = new Book({ title: title })
       await book.save((err, data) => {
+        if (err) return res.send("missing required field title")
         res.json({
           _id: data._id,
           title: data.title
