@@ -8,7 +8,7 @@
 
 'use strict';
 
-module.exports = function (app) {
+module.exports = function (app, Book) {
 
   app.route('/api/books')
     .get(function (req, res){
@@ -16,9 +16,16 @@ module.exports = function (app) {
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
     })
     
-    .post(function (req, res){
+    .post(async function (req, res){
       let title = req.body.title;
       //response will contain new book object including atleast _id and title
+      const book = new Book({ title: title })
+      await book.save((err, data) => {
+        res.json({
+          _id: data._id,
+          title: data.title
+        })
+      })
     })
     
     .delete(function(req, res){
