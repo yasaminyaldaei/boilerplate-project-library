@@ -8,17 +8,20 @@
 
 'use strict';
 
+const ObjectId = require('mongoose').Types.ObjectId
+
 module.exports = function (app, Book) {
 
   app.route('/api/books')
-    .get(function (req, res){
-      //response will be array of book objects
-      //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
+    .get(async function (req, res){
+      Book.find({}, (err, data) => {
+        if(err) return console.error
+        res.json(data)
+      })
     })
     
     .post(async function (req, res){
       let title = req.body.title;
-      //response will contain new book object including atleast _id and title
       const book = new Book({ title: title })
       await book.save((err, data) => {
         if (err) return res.send("missing required field title")
@@ -39,6 +42,10 @@ module.exports = function (app, Book) {
     .get(function (req, res){
       let bookid = req.params.id;
       //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
+      Book.findById(ObjectId(bookid), (err, data) => {
+        if (err) return res.send("no book exists")
+        res.json(data)
+      })
     })
     
     .post(function(req, res){

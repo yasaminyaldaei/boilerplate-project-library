@@ -42,7 +42,9 @@ connection.once('open', () => {
 
 const Schema = mongoose.Schema
 const bookSchema = new Schema({
-  title: { type: String, required: true}
+  title: { type: String, required: true},
+  comments: { type: Array, default: []},
+  commentscount: { type: Number, default: 0}
 })
 const Book = mongoose.model("Book", bookSchema)
 
