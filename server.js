@@ -32,7 +32,8 @@ fccTestingRoutes(app);
 
 mongoose.connect(process.env.DB, 
                 { useNewUrlParser: true,
-                  useUnifiedTopology: true })
+                  useUnifiedTopology: true,
+                  useFindAndModify: false })
 
 const connection = mongoose.connection
 connection.on('error', console.error.bind(console, "connection error"))
@@ -44,7 +45,7 @@ const Schema = mongoose.Schema
 const bookSchema = new Schema({
   title: { type: String, required: true},
   comments: { type: Array, default: []},
-  commentscount: { type: Number, default: 0}
+  commentcount: { type: Number, default: 0}
 })
 const Book = mongoose.model("Book", bookSchema)
 
